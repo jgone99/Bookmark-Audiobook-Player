@@ -1,5 +1,5 @@
-﻿using CommunityToolkit.Maui;
-using Microsoft.Extensions.Logging;
+﻿using Audiobookplayer.Services;
+using CommunityToolkit.Maui;
 
 namespace Audiobookplayer
 {
@@ -15,12 +15,9 @@ namespace Audiobookplayer
                 {
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
-                });
-
-#if DEBUG
-    		builder.Logging.AddDebug();
-#endif
-
+                })
+                .Services.AddSingleton<PlayerService>();
+            builder.Services.AddSingleton(Plugin.Maui.Audio.AudioManager.Current);
             return builder.Build();
         }
     }

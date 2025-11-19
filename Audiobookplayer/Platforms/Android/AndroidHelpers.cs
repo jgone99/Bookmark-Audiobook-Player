@@ -4,6 +4,7 @@ using Android.Content;
 using Android.Media;
 using Android.Provider;
 using Audiobookplayer.Models;
+using Java.IO;
 using Application = Android.App.Application;
 using Uri = Android.Net.Uri;
 
@@ -35,10 +36,11 @@ namespace Audiobookplayer.Platforms.Android
             return uris;
         }
 
-        private static List<Uri> sub_directories = new List<Uri>();
+        
 
         public static async Task<List<Audiobook>> LoadAudiobooksFromUriAsync(Uri libraryUri)
         {
+            List<Uri> sub_directories = new List<Uri>();
             var context = Application.Context;
             var resolver = context.ContentResolver;
 
@@ -119,7 +121,7 @@ namespace Audiobookplayer.Platforms.Android
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine($"Error loading audiobooks: {ex.Message}");
+                    System.Console.WriteLine($"Error loading audiobooks: {ex.Message}");
                 }
             }
             
@@ -152,6 +154,14 @@ namespace Audiobookplayer.Platforms.Android
             };
 
             return rootName + parts[1];
+        }
+
+        public static System.IO.Stream OpenInputStream(string uriString)
+        {
+            var context = Application.Context;
+            var resolver = context.ContentResolver;
+            var uri = Uri.Parse(uriString);
+            return resolver.OpenInputStream(uri);
         }
     }
 }

@@ -1,7 +1,6 @@
 ﻿using Audiobookplayer.Services;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using CommunityToolkit.Mvvm.Messaging;
 using System.Windows.Input;
 namespace Audiobookplayer.ViewModels
 {
@@ -9,18 +8,10 @@ namespace Audiobookplayer.ViewModels
     {
         private const string LibraryPrefKey = "library_uri";
 
-        public string LibraryFolderDisplayPath
-        {
-            get => libraryFolderPath;
-            set
-            {
-                SetProperty(ref libraryFolderPath, value);
-            }
-        }
-
         public ICommand FolderPickerCommand { private set; get; }
 
-        private string libraryFolderPath;
+        [ObservableProperty]
+        private string libraryFolderDisplayPath;
 
         public SettingsViewModel()
         {

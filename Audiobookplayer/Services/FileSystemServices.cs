@@ -48,5 +48,13 @@ namespace Audiobookplayer.Services
         {
             OnLibraryFolderChanged?.Invoke();
         }
+
+        public static System.IO.Stream OpenInputStream(string uriString)
+        {
+#if ANDROID
+            return Platforms.Android.AndroidHelpers.OpenInputStream(uriString);
+#endif
+            throw new NotImplementedException();
+        }
     }
 }

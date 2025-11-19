@@ -7,14 +7,21 @@
     Title="Audiobookplayer">
 
     <TabBar>
-        <Tab Title="Library"
-             Icon="library.svg">
-            <ShellContent ContentTemplate="{DataTemplate local:LibraryPage}" />
-        </Tab>
-        <Tab Title="Settings"
-             >
-            <ShellContent ContentTemplate="{DataTemplate local:SettingsPage}" />
-        </Tab>
+        <ShellContent 
+            ContentTemplate="{DataTemplate local:LibraryPage}"
+            Title="Library"
+            Route="LibraryTab"
+            Icon="library.svg" />
+
+        <ShellContent 
+            ContentTemplate="{DataTemplate local:PlayerPage}" 
+            Title="Player"
+            Route="PlayerTab"/>
+        
+        <ShellContent 
+            ContentTemplate="{DataTemplate local:SettingsPage}"
+            Title="Settings"
+            Route="SettingsTab"/>
     </TabBar>
 
 </Shell>

@@ -2,19 +2,12 @@
 {
     public partial class App : Application
     {
-        public App()
+        public IServiceProvider Services { get; }
+
+        public App(IServiceProvider services)
         {
             InitializeComponent();
-            string libraryFolder = Preferences.Default.Get("library_folder", "Unknown");
-            if (libraryFolder == "Unknown")
-            {
-                Directory.CreateDirectory(Path.Combine(FileSystem.AppDataDirectory, "audiobooks"));
-                Preferences.Default.Set("library_folder", Path.Combine(FileSystem.AppDataDirectory, "audiobooks"));
-            }
-            else if (!Directory.Exists(libraryFolder))
-            {
-                Directory.CreateDirectory(Path.Combine(FileSystem.AppDataDirectory, "audiobooks"));
-            }
+            Services = services;
         }
 
         protected override Window CreateWindow(IActivationState? activationState)

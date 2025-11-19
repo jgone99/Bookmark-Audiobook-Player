@@ -26,7 +26,8 @@
                        FontSize="16"
                        FontAttributes="Bold"
                        VerticalOptions="Start"/>
-                    <Label Text="{Binding LibraryFolderDisplayPath}"
+                    <Label 
+                        Text="{Binding LibraryFolderDisplayPath}"
                        FontAttributes="Italic"
                        FontSize="15"
                        LineBreakMode="MiddleTruncation"

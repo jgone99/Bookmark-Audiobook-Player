@@ -2,8 +2,8 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using System.Collections.ObjectModel;
 using Audiobookplayer.Services;
-using CommunityToolkit.Mvvm.Messaging;
-
+using System.Windows.Input;
+using CommunityToolkit.Mvvm.Input;
 
 #if ANDROID
 using Android.Provider;
@@ -17,13 +17,19 @@ namespace Audiobookplayer.ViewModels
         [ObservableProperty]
         private ObservableCollection<Audiobook> audiobooks = new();
 
-        private string libraryPrefKey = "library_uri";
+        private readonly string libraryPrefKey = "library_uri";
 
         private string? libraryUriString;
 
+        public ICommand SelectAudiobookCommand { private set; get; }
+
+        private readonly PlayerService _playerService;
+
         public AudiobookViewModel()
         {
+            _playerService = ((App)App.Current).Services.GetService<PlayerService>() ?? throw new InvalidOperationException("PlayerService not found");
             FileSystemServices.OnLibraryFolderChanged += OnLibraryFolderChanged;
+            SelectAudiobookCommand = new AsyncRelayCommand<Audiobook>(SelectAudiobookAsync);
             LoadAudiobooksAsync();
         }
 
@@ -58,6 +64,14 @@ namespace Audiobookplayer.ViewModels
         private async void OnLibraryFolderChanged()
         {
             await MainThread.InvokeOnMainThreadAsync(() => LoadAudiobooksAsync());
+        }
+
+        private async Task SelectAudiobookAsync(Audiobook? audiobook)
+        {
+            if (audiobook == null)
+                return;
+            await _playerService.SetBookAsync(audiobook);
+            await Shell.Current.GoToAsync("//PlayerTab", true);
         }
     }
 }

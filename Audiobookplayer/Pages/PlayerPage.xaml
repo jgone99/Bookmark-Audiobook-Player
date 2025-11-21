@@ -6,16 +6,20 @@
     <ContentPage.BindingContext>
         <viewmodels:PlayerViewModel />
     </ContentPage.BindingContext>
-    <VerticalStackLayout>
-        <Label 
-            Text="{Binding BookTitle}"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
+    <Grid>
         <Image Source="{Binding CoverImage}"
-               Aspect="AspectFill"
-               HeightRequest="200"
-               WidthRequest="200"
-               VerticalOptions="Center" 
-               HorizontalOptions="Center" /> "
-    </VerticalStackLayout>
+                   Aspect="AspectFit"
+                   VerticalOptions="Center" 
+                   HorizontalOptions="Center"
+                   />
+        <VerticalStackLayout>
+            <Label 
+                Text="{Binding BookTitle}"
+                FontAttributes="Bold"
+                FontSize="20"
+                VerticalOptions="Center" 
+                HorizontalOptions="Center" />
+        </VerticalStackLayout>
+    </Grid>
+
 </ContentPage>

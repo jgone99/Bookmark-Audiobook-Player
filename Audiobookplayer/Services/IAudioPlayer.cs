@@ -3,7 +3,7 @@ namespace Audiobookplayer.Services
 {
     public interface IAudioPlayer
     {
-        Task LoadAsync(string filePath);
+        void LoadAudio(string filePath);
         void Play();
         void Pause();
         void SeekTo(long position);

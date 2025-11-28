@@ -1,39 +1,54 @@
 ﻿
-using Audiobookplayer.Services;
-using Android.Content;
+
 using Android.App;
-using Android.Net;
-using AndroidX.Media3.Common;
+using Android.Content;
 using AndroidX.Media3.ExoPlayer;
-using Application = Android.App.Application;
-using Uri = Android.Net.Uri;
+using AndroidX.Media3.Session;
 
 namespace Audiobookplayer.Platforms.Android
 {
-    public class ExoPlayerService : IAudioPlayer
+    public class ExoPlayerService : MediaSessionService
     {
         private IExoPlayer _player;
-        public long Duration => _player.Duration;
+        private MediaSession _mediaSession;
+        private NotificationManager notificationManager;
 
-        public long CurrentPosition => _player.CurrentPosition;
-
-        public event EventHandler PlaybackStateChanged;
-
-        public ExoPlayerService()
+        public override void OnCreate()
         {
+            base.OnCreate();
+
+            NotificationChannel channel = new NotificationChannel("AudiobookChannel", "PennSkanvTicChannel", NotificationImportance.Max);
+            channel.Description = "PennSkanvTic channel for foreground service notification";
+
+            notificationManager = GetSystemService(Java.Lang.Class.FromType(typeof(NotificationManager))) as NotificationManager;
+            notificationManager.CreateNotificationChannel(channel);
+
+            Notification notification = new Notification.Builder(this, channel.Id)
+                .SetContentTitle("Audiobook Player")
+                .SetContentText("Playing audiobook")
+                .SetSmallIcon(Resource.Drawable.dotnet_bot)
+                .SetAutoCancel(false)
+                .SetOngoing(false)
+                .Build();
+            StartForeground(1, notification);
             _player = new ExoPlayerBuilder(Platform.AppContext).Build() ?? throw new InvalidOperationException("Failed to create ExoPlayer instance");
+            _mediaSession = new MediaSession.Builder(Platform.AppContext, _player).Build() ?? throw new InvalidOperationException("Failed to create MediaSession instance");
+            _player.AddListener(new CustomPlayerListener());
         }
 
-        public async Task LoadAsync(string filePath)
+        public override void OnDestroy()
         {
-            var mediaItem = MediaItem.FromUri(Uri.Parse(filePath));
-            _player.SetMediaItem(mediaItem);
-            _player.Prepare();
+            base.OnDestroy();
+            _player.Release();
+            _mediaSession.Release();
+            _player = null;
+            _mediaSession = null;
+            base.OnDestroy();
         }
 
-        public void Pause() => _player.Pause();
-        public void Play() => _player.Play();
-
-        public void SeekTo(long position) => _player.SeekTo(position);
+        public override MediaSession? OnGetSession(MediaSession.ControllerInfo? p0)
+        {
+            return _mediaSession;
+        }
     }
 }

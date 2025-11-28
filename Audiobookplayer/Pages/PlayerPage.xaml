@@ -2,23 +2,31 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:viewmodels="clr-namespace:Audiobookplayer.ViewModels"
-             x:Class="Audiobookplayer.Pages.PlayerPage">
+             xmlns:controls="clr-namespace:Audiobookplayer.Controls"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             x:Class="Audiobookplayer.Pages.PlayerPage"
+             x:Name="root">
     <ContentPage.BindingContext>
-        <viewmodels:PlayerViewModel />
+        <viewmodels:PlayerViewModel x:Name="PlayerVM" />
     </ContentPage.BindingContext>
-    <Grid>
+    <Grid
+        Padding="20, 0, 20, 0">
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
             <RowDefinition Height="3*" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <Image 
-            Grid.Row="1"
-            Source="{Binding CoverImage}"
-            Aspect="AspectFit"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center"
-                   />
+        <Border 
+            StrokeShape="RoundRectangle 10, 10, 10, 10"
+            
+            Grid.Row="1"            
+            VerticalOptions="Fill" 
+            WidthRequest="{Binding Source={RelativeSource Self}, Path=Height}"
+            >
+            <Image   
+                Aspect="AspectFill"
+                Source="{Binding CoverImage}" />
+        </Border>
         <VerticalStackLayout
             Grid.Row="0"
             >
@@ -32,12 +40,20 @@
         <VerticalStackLayout
             Grid.Row="2"
             VerticalOptions="Center"
+            Spacing="20"
             >
+            <controls:AudioSeekbar
+                Duration="{Binding Duration}"
+                Position="{Binding Position}"
+                SeekRequested="{Binding OnSeekRequested, Source={x:Reference root}}"
+                />
             <ImageButton
                 VerticalOptions="Center"
                 Source="{Binding PausePlayButtonIcon, TargetNullValue='pause.png'}"
                 Command="{Binding PausePlayCommand}"
                 Scale="1"
+                WidthRequest="40"
+                HeightRequest="40"
                 >
             </ImageButton>
         </VerticalStackLayout>

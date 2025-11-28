@@ -2,6 +2,7 @@
 using Audiobookplayer.Services;
 using CommunityToolkit.Maui;
 using Maui.FreakyEffects;
+using Audiobookplayer.Platforms.Android;
 
 namespace Audiobookplayer
 {
@@ -13,6 +14,9 @@ namespace Audiobookplayer
             builder
                 .UseMauiApp<App>()
                 .UseMauiCommunityToolkit()
+#if ANDROID
+                .UseMauiCommunityToolkitMediaElement()
+#endif
                 .ConfigureFonts(fonts =>
                 {
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
@@ -23,7 +27,7 @@ namespace Audiobookplayer
                     effects.InitFreakyEffects();
                 });
 #if ANDROID
-            builder.Services.AddSingleton<IAudioPlayer, Platforms.Android.ExoPlayerService>();
+            builder.Services.AddSingleton<IAudioPlayer, AndroidAudioPlayer>();
 #endif
             builder.Services.AddSingleton<PlayerService>();
             return builder.Build();

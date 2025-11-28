@@ -3,6 +3,7 @@ using Audiobookplayer.Services;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.ComponentModel;
 using System.Windows.Input;
+using Microsoft.Maui.Controls.Shapes;
 
 namespace Audiobookplayer.ViewModels
 {
@@ -20,9 +21,19 @@ namespace Audiobookplayer.ViewModels
         [ObservableProperty]
         private ImageSource coverImage;
 
+        [ObservableProperty]
+        private RectangleGeometry coverImageRect;
+
+        [ObservableProperty]
+        private double duration;
+
+        [ObservableProperty]
+        private double position;
+
         private Audiobook? currentBook;
 
         public ICommand PausePlayCommand { private set; get; }
+        public ICommand SeekToCommand { private set; get; }
 
         public PlayerViewModel()
         {
@@ -30,28 +41,40 @@ namespace Audiobookplayer.ViewModels
             _playerService.OnAudiobookChanged += OnBookChanged;
 
             PausePlayCommand = new AsyncRelayCommand(PausePlayToggle);
+            SeekToCommand = new RelayCommand<double>(SeekTo);
 
             currentBook = _playerService.CurrentAudiobook;
             BookTitle = currentBook?.Title ?? "No book loaded";
             CoverImage = currentBook?.CoverImage;
-
+            LoadAudiobookAsync();
             SetPlay();
+
+            Dispatcher.GetForCurrentThread().StartTimer(TimeSpan.FromMilliseconds(250), () =>
+            {
+                Position = _playerService.GetCurrentPosition();
+                return true;
+            });
         }
 
-        private void OnBookChanged(Audiobook? book)
+        private async void OnBookChanged(Audiobook? book)
         {
             ResetView();
             currentBook = book;
             BookTitle = book?.Title ?? "No book loaded";
             CoverImage = book?.CoverImage;
-            LoadAudio();
-            
+            LoadAudiobookAsync();    
         }
 
-        private void LoadAudio()
+        private void LoadAudiobookAsync()
         {
+            if (currentBook == null)
+            {
+                Duration = 0;
+                Position = 0;
+                return;
+            }
             Console.WriteLine("Loading audio");
-            // your audio playback setup
+            _playerService.LoadAudio(currentBook.FilePath);
         }
 
         private async Task PausePlayToggle()
@@ -83,6 +106,11 @@ namespace Audiobookplayer.ViewModels
         private void ResetView()
         {
             SetPlay();
+        }
+
+        private void SeekTo(double position)
+        {
+            _playerService.SeekTo((long)position);
         }
     }
 }

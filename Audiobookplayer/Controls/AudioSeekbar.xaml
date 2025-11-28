@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Audiobookplayer.Controls.AudioSeekbar"
+             x:Name="root">
+    <Slider x:Name="SliderControl"
+            Minimum="0"           
+            Maximum="{Binding Duration, Source={x:Reference root}}"
+            Value="{Binding Position, Source={x:Reference root}}"
+            DragCompleted="{Binding OnDragCompleted, Source={x:Reference root}}"
+            DragStarted="{Binding OnDragStarted, Source={x:Reference root}}"
+            ThumbColor="BlueViolet"
+            MaximumTrackColor="Gray"
+            MinimumTrackColor="Black"
+            HeightRequest="10"
+            VerticalOptions="Fill"
+            HorizontalOptions="Fill"
+            >
+    </Slider>
+</ContentView>

@@ -13,7 +13,6 @@ It supports local audio files, background playback, bookmarks (WIP), progress sy
 - 🔄 **Adjustable playback speed**  
 - 🔔 **Lockscreen + notification controls (Android)**
 - ⏱️ **Smart resume** — automatically remembers where you left off
-- 🔔 **Lockscreen + notification controls (Android)**
 
 ## 🚀 Planned Features
 

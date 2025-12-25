@@ -7,17 +7,18 @@ It supports local audio files, background playback, bookmarks (WIP), progress sy
 
 ## 🚀 Features
 
-- 🎧 **Clean, intuitive UI** optimized for phones and tablets  
-- 🔊 **Background playback** with media controls   
-- 📚 **Library management** with cover art and metadata  
-- 🔄 **Adjustable playback speed**  
-- 🔔 **Lockscreen + notification controls (Android)**
-- ⏱️ **Smart resume** — automatically remembers where you left off
+- **Clean, intuitive UI** optimized for phones and tablets  
+- **Background playback** with media controls   
+- **Library management** with cover art and metadata  
+- **Adjustable playback speed**  
+- **Lockscreen + notification controls (Android)**
+- **Smart resume** — automatically remembers where you left off
 
 ## 🚀 Planned Features
 
-- 📍 **Unlimited bookmarks** per audiobook  
-- 🤖 **AI-powered Speech To Text Transcription**
+- **Unlimited bookmarks** per audiobook
+- **Chapter select** 
+- **AI-powered Speech To Text Transcription**
 
 ---
 

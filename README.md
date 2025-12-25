@@ -17,7 +17,6 @@ It supports local audio files, background playback, bookmarks (WIP), progress sy
 ## 🚀 Planned Features
 
 - 📍 **Unlimited bookmarks** per audiobook  
-- 🔄 **Adjustable playback speed**  
 - 🤖 **AI-powered Speech To Text Transcription**
 
 ---
